@@ -32,4 +32,3 @@ def add_expense(expense: Expense):
                 VALUES(?,?,?,?)
     """, (expense.amount, expense.category, expense.description, expense.date))
     conn.commit()
-

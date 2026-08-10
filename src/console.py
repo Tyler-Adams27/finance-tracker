@@ -52,14 +52,13 @@ def new_expense():
         if not new_amount or not new_category or not new_description or not new_date:
             print("Fields cannot be empty!")
             continue
-        else:
-            new_expense_obj = Expense(new_amount, new_category, new_description, new_date)
-            try:
-                add_expense(new_expense_obj)
-                print("Expense added successfully!")
-                break
-            except ValueError as e:
-                print(f"Error: {e}")
+        new_expense_obj = Expense(new_amount, new_category, new_description, new_date)
+        try:
+            add_expense(new_expense_obj)
+            print("Expense added successfully!")
+            break
+        except ValueError as e:
+            print(f"Error: {e}")
 
 def edit_expense():
     """
