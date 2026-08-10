@@ -3,6 +3,7 @@
 """
 from expense import Expense
 from db import add_expense
+
 def console():
     """
     The console implementation
@@ -52,11 +53,14 @@ def new_expense():
         if not new_amount or not new_category or not new_description or not new_date:
             print("Fields cannot be empty!")
             continue
+
         new_expense_obj = Expense(new_amount, new_category, new_description, new_date)
+
         try:
             add_expense(new_expense_obj)
             print("Expense added successfully!")
             break
+
         except ValueError as e:
             print(f"Error: {e}")
 

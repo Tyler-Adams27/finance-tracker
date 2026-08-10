@@ -10,10 +10,12 @@ class Expense:
         self.category = category
         self.description = description
         self.date = date
+
     def make_linter_happy1(self):
         """
         Happy?
         """
+
     def make_linter_happy2(self):
         """
         Happy?
