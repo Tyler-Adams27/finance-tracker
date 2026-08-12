@@ -1,12 +1,23 @@
 """
  The console
 """
-from expense import Expense
-from db import add_expense
+import os
+import re
+from datetime import datetime
+from src.expense import Expense
+from src.db import add_expense
+
+# Ensures absolute path is correct
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(SCRIPT_DIR, "..", "expenses.db")
 
 def console():
     """
-    The console implementation
+    Runs the main command-line loop for the Finance Tracker CLI.
+
+    This function presents the primary menu to the user and calls 
+    the appropriate handler based on input (Add, Edit, Delete, List).
+    It manages the overall state of the CLI session until manually exited.
     """
     exit_console = False
     user_input = ""
@@ -41,7 +52,10 @@ def console():
 
 def new_expense():
     """
-    Add a new expense.
+    Guides the user through adding a brand-new expense record via CLI prompts.
+
+    Interacts with the database layer to persist the structured data upon successful input.
+    Side Effect: Calls add_expense() to modify expenses.db.
     """
     while True:
         new_amount = input("Amount: ").strip()
@@ -49,15 +63,40 @@ def new_expense():
         new_description = input("Description: ").strip()
         new_date = input("Date: ").strip()
 
-        # Check if the fields are empty
+        # Input validation
+            # - Amount must be in "??.??" format.
+            # - Category must not contain symbols (isAlpha()).
+            # - Description can be anything.
+            # - Date must follow "DD/MM/YYYY" format.
+            # Check if the fields are empty.
         if not new_amount or not new_category or not new_description or not new_date:
             print("Fields cannot be empty!")
             continue
 
+        if not new_category.isalpha():
+            print("Category can only contain the alphabet!")
+            continue
+
+        try:
+            datetime.strptime(new_date, "%d/%m/%Y")
+
+        except ValueError:
+
+            print("Incorrect date format. Use DD/MM/YYYY")
+            continue
+
+        amount_pattern = r"\d{2}\.\d{2}$"
+
+        if not re.match(amount_pattern, new_amount):
+            print("Amount is in the incorrect format. Use 00.00")
+            continue
+
+
+
         new_expense_obj = Expense(new_amount, new_category, new_description, new_date)
 
         try:
-            add_expense(new_expense_obj)
+            add_expense(new_expense_obj, DB_PATH)
             print("Expense added successfully!")
             break
 
@@ -66,15 +105,26 @@ def new_expense():
 
 def edit_expense():
     """
-    Edit an expense.
+    Handles the logic flow for modifying an existing expense record.
+
+    In a future web implementation (Stage 2), this function will be replaced by
+    an API endpoint handler that processes IDs and JSON payloads.
     """
 def delete_expense():
+
     """
-    Delete a expense.
+    Manages the logic flow for removing a recorded expense record.
+
+    This function prompts the user to specify which expense by ID or criteria 
+    should be permanently removed from the system.
     """
 def list_expenses():
     """
-    List all expenses.
+    Retrieves and displays all stored expenses to the user.
+
+    This function calls the database layer to fetch records and then 
+    formats and prints them in a readable format to the console.
+    Side Effect: Reads from expenses.db and prints output to the console.
     """
 
 console()

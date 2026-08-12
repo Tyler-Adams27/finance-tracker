@@ -1,14 +1,28 @@
 """
-The database implementation.
+Data Access Object (DAO) for Expenses.
+
+Handles all low-level database interactions using SQLite. It abstracts 
+the complexity of connection management and transaction execution from the rest of the application.
+All functions here cause side effects by writing to or reading from 'expenses.db'.
 """
+import os
 import sqlite3
-from expense import Expense
+from src.expense import Expense
+
+# Ensures absolute path is correct
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(SCRIPT_DIR, "..", "expenses.db")
 
 def init_db():
     """
-    Connect to db
+    Initializes the database schema.
+
+    This function ensures that the 'expenses' table exists in the local 
+    database file and sets up necessary foreign key constraints.
+    It should be called exactly once when the application starts.
+
     """
-    conn = sqlite3.connect("expenses.db")
+    conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("PRAGMA foreign_keys = ON;")
     cur.execute("""
@@ -22,11 +36,15 @@ def init_db():
 
 """)
 
-def add_expense(expense: Expense):
+def add_expense(expense: Expense, db_name):
     """
-    Add an expense
+    Persists a new expense record into the database.
+
+    Args:
+        expense (Expense): The structured expense data to save.
+
     """
-    conn = sqlite3.connect("../expenses.db")
+    conn = sqlite3.connect(db_name)
     cur = conn.cursor()
     cur.execute("""INSERT INTO expenses(amount, category, description, date)
                 VALUES(?,?,?,?)

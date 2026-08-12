@@ -1,22 +1,23 @@
 """
-This is the expense module.
+Data container module for Expense objects.
+
+Defines the core data structure representing a single financial expense.
+This module is primarily a data model layer and contains no business logic.
 """
+from dataclasses import dataclass
+
+@dataclass
 class Expense:
     """
-    This is the expense class.
+    Initializes an Expense instance.
+
+    Args:
+        amount (str): The monetary value of the expense.
+        category (str): The spending category (e.g., 'Food', 'Rent').
+        description (str): A detailed description of the purchase or expense.
+        date (str): The date of the transaction in YYYY-MM-DD format.
     """
-    def __init__(self, amount: float, category: str, description: str, date: str):
-        self.amount = amount
-        self.category = category
-        self.description = description
-        self.date = date
-
-    def make_linter_happy1(self):
-        """
-        Happy?
-        """
-
-    def make_linter_happy2(self):
-        """
-        Happy?
-        """
+    amount: str
+    category: str
+    description: str
+    date: str
