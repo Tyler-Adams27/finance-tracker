@@ -7,6 +7,7 @@ import unittest
 import os
 from src.expense import Expense
 from src.db import add_expense
+from src.constants import DB_SCHEMA
 
 class TestDB(unittest.TestCase):
     """
@@ -25,14 +26,7 @@ class TestDB(unittest.TestCase):
 
         with sqlite3.connect(self.test_db) as conn:
             cur = conn.cursor()
-            cur.execute("""
-            CREATE TABLE IF NOT EXISTS expenses (
-                id INTEGER PRIMARY KEY,
-                amount TEXT NOT NULL,
-                category TEXT NOT NULL,
-                description TEXT NOT NULL,
-                date TEXT NOT NULL)
-                """)
+            cur.execute(DB_SCHEMA)
             conn.commit()
 
     def tearDown(self):

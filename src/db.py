@@ -8,6 +8,7 @@ All functions here cause side effects by writing to or reading from 'expenses.db
 import os
 import sqlite3
 from src.expense import Expense
+from src.constants import DB_SCHEMA
 
 # Ensures absolute path is correct
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -25,16 +26,7 @@ def init_db():
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("PRAGMA foreign_keys = ON;")
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS expenses (
-        id INTEGER PRIMARY KEY,
-        amount TEXT NOT NULL,
-        category TEXT NOT NULL,
-        description TEXT NOT NULL,
-        date TEXT NOT NULL
-    );
-
-""")
+    cur.execute(DB_SCHEMA)
 
 def add_expense(expense: Expense, db_name):
     """
