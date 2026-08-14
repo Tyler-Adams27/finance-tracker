@@ -39,15 +39,11 @@ def get_files():
                 file_count = 0
                 for file_path in sub_dir_path.glob("*.py"):
                     if file_path.is_file():
-                        try:
-                            with open(file_path, "r", encoding="utf-8") as f:
-                                lines = f.readlines()
-                                count = len(lines)
-                                line_count += count
-                            file_count += 1
-
-                        except UnicodeDecodeError:
-                            pass
+                        with open(file_path, "r", encoding="utf-8") as f:
+                            lines = f.readlines()
+                            count = len(lines)
+                            line_count += count
+                        file_count += 1
             except FileNotFoundError:
                 print("File not found!")
     print(f"Line count: {line_count}")
