@@ -13,14 +13,13 @@ def get_files():
     try:
         script_dir = Path(__file__).resolve().parent
         project_root = script_dir.parent.parent
-        root_path = project_root / "src" 
+        root_path = project_root / "src"
 
     except NameError:
         return
 
     if not root_path.is_dir():
         return
-    
     try:
         for file_path in root_path.glob("*.py"):
             if file_path.is_file():
@@ -30,7 +29,7 @@ def get_files():
                         count = len(lines)
                         line_count += count
                 except UnicodeDecodeError:
-                    print(f"  ! WARNING: Skipping {file_path.name} due to encoding error (not UTF-8).")
+                    pass
     except FileNotFoundError:
         print("FILE NOT FOUND!")
     for sub_dir_path in root_path.iterdir():
@@ -48,7 +47,7 @@ def get_files():
                             file_count += 1
 
                         except UnicodeDecodeError:
-                            print(f"  ! WARNING: Skipping {file_path.name} due to encoding error (not UTF-8)."))
+                            pass
             except FileNotFoundError:
                 print("File not found!")
     print(f"Line count: {line_count}")
