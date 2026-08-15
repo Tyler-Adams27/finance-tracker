@@ -17,8 +17,6 @@ def console():
     the appropriate handler based on input (Add, Edit, Delete, List).
     It manages the overall state of the CLI session until manually exited.
     """
-
-
     user_input = ""
     exit_program = False
 
@@ -59,32 +57,29 @@ def new_expense():
         if not validate_amount(new_amount):
             print("Amount must be numeric (e.g 10 or 10.99)")
             continue
-        else:
-            break
+        break
 
     while True:
         new_category = input("Category: ").strip()
         if not validate_category(new_category):
             print("Category can only contain alphabetic characters and spaces")
             continue
-        else:
-            break
+        break
 
     while True:
         new_description = input("Description: ").strip()
         if not validate_description(new_description):
             print("Description must not be empty")
             continue
-        else:
-            break
+        break
 
     while True:
         new_date = input("Date: ").strip()
         if not validate_date(new_date):
             print("Date is in the wrong format (Use DD/MM/YYYY)")
             continue
-        else:
-            break
+
+        break
     try:
         created_expense = Expense(new_amount, new_category, new_description, new_date)
         add_expense(created_expense, "expenses.db")
