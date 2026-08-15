@@ -2,12 +2,10 @@
  The console
 """
 import os
-import re
-from datetime import datetime
 from src.expense import Expense
 from src.db import add_expense
+from src.validators import validate_amount, validate_category, validate_description, validate_date
 
-# Ensures absolute path is correct
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(SCRIPT_DIR, "..", "expenses.db")
 
@@ -19,10 +17,13 @@ def console():
     the appropriate handler based on input (Add, Edit, Delete, List).
     It manages the overall state of the CLI session until manually exited.
     """
-    exit_console = False
-    user_input = ""
 
-    while not exit_console:
+
+    user_input = ""
+    exit_program = False
+
+    while not exit_program:
+
         print("-------------------")
         print("THE FINANCE TRACKER")
         print("-------------------\n")
@@ -30,78 +31,65 @@ def console():
         print("1: Add a new expense.")
         print("2: Edit an expense.")
         print("3: Delete an expense.")
-        print("4: List all expenses.\n")
+        print("4: List all expenses.")
+        print("Q: Close program.\n")
 
         user_input = input("")
 
         match user_input:
             case "1":
-                exit_console = True
                 new_expense()
             case "2":
-                exit_console = True
                 edit_expense()
             case "3":
-                exit_console = True
                 delete_expense()
             case "4":
-                exit_console = True
                 list_expenses()
+            case "Q":
+                exit_program = True
             case _:
                 pass
 
 def new_expense():
     """
-    Guides the user through adding a brand-new expense record via CLI prompts.
-
-    Interacts with the database layer to persist the structured data upon successful input.
-    Side Effect: Calls add_expense() to modify expenses.db.
+    Create a new expense, and enter it into the database.
     """
     while True:
         new_amount = input("Amount: ").strip()
-        new_category = input("Category: ").strip()
-        new_description = input("Description: ").strip()
-        new_date = input("Date: ").strip()
-
-        # Input validation
-            # - Amount must be in "??.??" format.
-            # - Category must not contain symbols (isAlpha()).
-            # - Description can be anything.
-            # - Date must follow "DD/MM/YYYY" format.
-            # Check if the fields are empty.
-        if not new_amount or not new_category or not new_description or not new_date:
-            print("Fields cannot be empty!")
+        if not validate_amount(new_amount):
+            print("Amount must be numeric (e.g 10 or 10.99)")
             continue
-
-        if not new_category.isalpha():
-            print("Category can only contain the alphabet!")
-            continue
-
-        try:
-            datetime.strptime(new_date, "%d/%m/%Y")
-
-        except ValueError:
-
-            print("Incorrect date format. Use DD/MM/YYYY")
-            continue
-
-        amount_pattern = r"\d{2}\.\d{2}$"
-
-        if not re.match(amount_pattern, new_amount):
-            print("Amount is in the incorrect format. Use 00.00")
-            continue
-
-
-
-        new_expense_obj = Expense(new_amount, new_category, new_description, new_date)
-
-        try:
-            add_expense(new_expense_obj, DB_PATH)
-            print("Expense added successfully!")
+        else:
             break
 
-        except ValueError as e:
-            print(f"Error: {e}")
+    while True:
+        new_category = input("Category: ").strip()
+        if not validate_category(new_category):
+            print("Category can only contain alphabetic characters and spaces")
+            continue
+        else:
+            break
+
+    while True:
+        new_description = input("Description: ").strip()
+        if not validate_description(new_description):
+            print("Description must not be empty")
+            continue
+        else:
+            break
+
+    while True:
+        new_date = input("Date: ").strip()
+        if not validate_date(new_date):
+            print("Date is in the wrong format (Use DD/MM/YYYY)")
+            continue
+        else:
+            break
+    try:
+        created_expense = Expense(new_amount, new_category, new_description, new_date)
+        add_expense(created_expense, "expenses.db")
+    except ValueError as e:
+        print(f"ERROR: {e}")
 
 def edit_expense():
     """
@@ -126,5 +114,3 @@ def list_expenses():
     formats and prints them in a readable format to the console.
     Side Effect: Reads from expenses.db and prints output to the console.
     """
-
-console()

@@ -10,7 +10,6 @@ import sqlite3
 from src.expense import Expense
 from src.constants import DB_SCHEMA
 
-# Ensures absolute path is correct
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(SCRIPT_DIR, "..", "expenses.db")
 
@@ -23,10 +22,14 @@ def init_db():
     It should be called exactly once when the application starts.
 
     """
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("PRAGMA foreign_keys = ON;")
-    cur.execute(DB_SCHEMA)
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cur = conn.cursor()
+        cur.execute("PRAGMA foreign_keys = ON;")
+        cur.execute(DB_SCHEMA)
+        cur.close()
+    except sqlite3.Error as e:
+        print(f"SQLite3 Error: {e}")
 
 def add_expense(expense: Expense, db_name):
     """
@@ -36,9 +39,13 @@ def add_expense(expense: Expense, db_name):
         expense (Expense): The structured expense data to save.
 
     """
-    conn = sqlite3.connect(db_name)
-    cur = conn.cursor()
-    cur.execute("""INSERT INTO expenses(amount, category, description, date)
-                VALUES(?,?,?,?)
-    """, (expense.amount, expense.category, expense.description, expense.date))
-    conn.commit()
+    try:
+        conn = sqlite3.connect(db_name)
+        cur = conn.cursor()
+        cur.execute("""INSERT INTO expenses(amount, category, description, date)
+                    VALUES(?,?,?,?)
+        """, (expense.amount, expense.category, expense.description, expense.date))
+        conn.commit()
+        conn.close()
+    except sqlite3.Error as e:
+        print(f"SQLite3 Error: {e}")

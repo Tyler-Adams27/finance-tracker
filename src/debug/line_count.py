@@ -33,7 +33,6 @@ def get_files():
     except FileNotFoundError:
         print("FILE NOT FOUND!")
     for sub_dir_path in root_path.iterdir():
-        # Only process items that are directories
         if sub_dir_path.is_dir():
             try:
                 file_count = 0
@@ -47,4 +46,5 @@ def get_files():
             except FileNotFoundError:
                 print("File not found!")
     print(f"Line count: {line_count}")
+
 get_files()
