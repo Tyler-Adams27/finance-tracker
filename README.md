@@ -29,9 +29,9 @@ The project is designed to run using Python. Please ensure you have Python insta
 Upon running the application, a menu will be displayed with the following options:
 
 *   **1: Add a new expense.** Follow the prompts to enter the amount, category, description, and date for your transaction.
-*   **2: Edit an expense.** Select an existing entry to modify its details. (WIP)
-*   **3: Delete an expense.** Remove a recorded transaction permanently. (WIP)
-*   **4: List all expenses.** View a summary of every expense currently stored in the tracker. (WIP)
+*   **2: Edit an expense.** Select an existing entry to modify its details.
+*   **3: Delete an expense.** Remove a recorded transaction permanently.
+*   **4: List all expenses.** View a summary of every expense currently stored in the tracker.
 
 ## Codebase Structure
 
