@@ -2,7 +2,7 @@
 
 This document outlines the phased approach for evolving the Finance Tracker from its current Command Line Interface (CLI) tool into a fully functional web application using Flask.
 
-## Stage 1: Core Structure & Command Line Interface (Current State)
+## Stage 1: Core Structure & Command Line Interface (Finished)
 
 **Goal:** Establish and stabilize the foundational logic, data handling, and user interaction flow entirely through the command line.
 
@@ -16,7 +16,7 @@ The project currently adheres to this stage. The core functionalities are in pla
 *   Data integrity is maintained through defined classes and database transactions.
 *   The application is stable for local testing and usage via `python src/console.py`.
 
-## Stage 2: Web Application Implementation (Flask Server)
+## Stage 2: Web Application Implementation (Flask Server) In Progress
 
 **Goal:** Migrate the existing core logic to a web framework, providing an accessible Graphical User Interface (GUI) via a Flask server.
 
