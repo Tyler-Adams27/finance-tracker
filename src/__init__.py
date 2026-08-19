@@ -1,0 +1,3 @@
+"""
+Finance Tracker package
+"""
