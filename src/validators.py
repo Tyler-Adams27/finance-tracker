@@ -13,8 +13,7 @@ def validate_amount(amount):
             raise ValueError
         if float(amount) <= 0:
             raise ValueError
-        if not amount:
-            raise ValueError
+        # Empty string is already caught by regex above
     except ValueError:
         return False
     return True
